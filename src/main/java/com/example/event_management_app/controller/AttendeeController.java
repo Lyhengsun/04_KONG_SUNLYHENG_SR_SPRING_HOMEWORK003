@@ -21,6 +21,8 @@ import com.example.event_management_app.model.dto.response.PagedResponse;
 import com.example.event_management_app.model.entity.Attendee;
 import com.example.event_management_app.service.AttendeeService;
 
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -44,7 +46,8 @@ public class AttendeeController {
     }
 
     @GetMapping("/{attendee-id}")
-    public ResponseEntity<ApiResponse<Attendee>> getAttendeeById(@PathVariable("attendee-id") Long attendeeId) {
+    public ResponseEntity<ApiResponse<Attendee>> getAttendeeById(
+            @PathVariable("attendee-id") @Positive(message = "Attendee ID number needed to be positive") @Valid Long attendeeId) {
         Attendee attendee = attendeeService.getAttendeeById(attendeeId);
 
         if (attendee == null) {
@@ -61,7 +64,7 @@ public class AttendeeController {
     }
 
     @PostMapping
-    public ResponseEntity<ApiResponse<Attendee>> saveAttendee(@RequestBody AttendeeRequest request) {
+    public ResponseEntity<ApiResponse<Attendee>> saveAttendee(@RequestBody @Valid AttendeeRequest request) {
         Attendee attendee = attendeeService.saveAttendee(request);
         ApiResponse<Attendee> response = ApiResponse.<Attendee>builder()
                 .message("Save new attendee successfully")
@@ -73,8 +76,9 @@ public class AttendeeController {
     }
 
     @PutMapping("/{attendee-id}")
-    public ResponseEntity<ApiResponse<Attendee>> updateAttendeeById(@PathVariable("attendee-id") Long attendeeId,
-            @RequestBody AttendeeRequest request) {
+    public ResponseEntity<ApiResponse<Attendee>> updateAttendeeById(
+            @PathVariable("attendee-id") @Positive(message = "Attendee ID number needed to be positive") @Valid Long attendeeId,
+            @RequestBody @Valid AttendeeRequest request) {
         Attendee attendee = attendeeService.updateAttendeeById(attendeeId, request);
 
         if (attendee == null) {
@@ -91,7 +95,8 @@ public class AttendeeController {
     }
 
     @DeleteMapping("/{attendee-id}")
-    public ResponseEntity<ApiResponse<Attendee>> deleteAttendeeById(@PathVariable("attendee-id") Long attendeeId) {
+    public ResponseEntity<ApiResponse<Attendee>> deleteAttendeeById(
+            @PathVariable("attendee-id") @Positive(message = "Attendee ID number needed to be positive") @Valid Long attendeeId) {
         Attendee attendee = attendeeService.deleteAttendeeById(attendeeId);
 
         if (attendee == null) {
