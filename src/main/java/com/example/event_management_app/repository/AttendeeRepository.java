@@ -22,7 +22,7 @@ public interface AttendeeRepository {
     @Select("""
             SELECT * FROM attendees OFFSET #{offset} LIMIT #{limit};
             """)
-    List<Attendee> getAllAttendees(@Param("offset") Long offset, @Param("limit") Long limit);
+    public List<Attendee> getAllAttendees(@Param("offset") Long offset, @Param("limit") Long limit);
 
     @Select("""
             SELECT COUNT(attendee_id) attendees_count FROM attendees;
@@ -33,7 +33,7 @@ public interface AttendeeRepository {
     @Select("""
             SELECT * FROM attendees WHERE attendee_id = #{attendee_id};
             """)
-    Attendee getAttendeeById(@Param("attendee_id") Long attendeeId);
+    public Attendee getAttendeeById(@Param("attendee_id") Long attendeeId);
 
     @ResultMap("attendeeMapper")
     @Select("""
@@ -41,7 +41,7 @@ public interface AttendeeRepository {
             VALUES (#{req.attendeeName}, #{req.email})
             RETURNING *;
             """)
-    Attendee saveAttendee(@Param("req") AttendeeRequest request);
+    public Attendee saveAttendee(@Param("req") AttendeeRequest request);
 
     @ResultMap("attendeeMapper")
     @Select("""
@@ -49,7 +49,7 @@ public interface AttendeeRepository {
             WHERE attendee_id = #{attendee_id}
             RETURNING *;
             """)
-    Attendee updateAttendeeById(@Param("attendee_id") Long attendeeId, @Param("req") AttendeeRequest request);
+    public Attendee updateAttendeeById(@Param("attendee_id") Long attendeeId, @Param("req") AttendeeRequest request);
 
     @ResultMap("attendeeMapper")
     @Select("""
@@ -57,5 +57,5 @@ public interface AttendeeRepository {
             WHERE attendee_id = #{attendee-id}
             RETURNING *;
             """)
-    Attendee deleteAttendeeById(@Param("attendee-id") Long attendeeId);
+    public Attendee deleteAttendeeById(@Param("attendee-id") Long attendeeId);
 }

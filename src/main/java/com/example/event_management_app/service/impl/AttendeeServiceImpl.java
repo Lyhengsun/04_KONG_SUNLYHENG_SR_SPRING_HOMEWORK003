@@ -44,7 +44,7 @@ public class AttendeeServiceImpl implements AttendeeService {
     @Override
     public Attendee updateAttendeeById(Long attendeeId, AttendeeRequest request) {
         Attendee attendee = attendeeRepository.updateAttendeeById(attendeeId, request);
-        return attendeeRepository.getAttendeeById(attendee.getAttendeeId());
+        return attendee;
     }
 
     @Override

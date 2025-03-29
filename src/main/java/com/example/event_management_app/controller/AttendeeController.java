@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.event_management_app.exception.NotFoundException;
 import com.example.event_management_app.model.dto.request.AttendeeRequest;
 import com.example.event_management_app.model.dto.response.ApiResponse;
 import com.example.event_management_app.model.dto.response.PagedResponse;
@@ -45,6 +46,11 @@ public class AttendeeController {
     @GetMapping("/{attendee-id}")
     public ResponseEntity<ApiResponse<Attendee>> getAttendeeById(@PathVariable("attendee-id") Long attendeeId) {
         Attendee attendee = attendeeService.getAttendeeById(attendeeId);
+
+        if (attendee == null) {
+            throw new NotFoundException("Attendee with ID " + attendeeId + " does not exist");
+        }
+
         ApiResponse<Attendee> response = ApiResponse.<Attendee>builder()
                 .message("Get attendee with ID: " + attendeeId + " successfully")
                 .payload(attendee)
@@ -70,6 +76,11 @@ public class AttendeeController {
     public ResponseEntity<ApiResponse<Attendee>> updateAttendeeById(@PathVariable("attendee-id") Long attendeeId,
             @RequestBody AttendeeRequest request) {
         Attendee attendee = attendeeService.updateAttendeeById(attendeeId, request);
+
+        if (attendee == null) {
+            throw new NotFoundException("Attendee with ID " + attendeeId + " does not exist");
+        }
+
         ApiResponse<Attendee> response = ApiResponse.<Attendee>builder()
                 .message("Update Attendee with ID: " + attendeeId + " successfully")
                 .payload(attendee)
@@ -82,6 +93,11 @@ public class AttendeeController {
     @DeleteMapping("/{attendee-id}")
     public ResponseEntity<ApiResponse<Attendee>> deleteAttendeeById(@PathVariable("attendee-id") Long attendeeId) {
         Attendee attendee = attendeeService.deleteAttendeeById(attendeeId);
+
+        if (attendee == null) {
+            throw new NotFoundException("Attendee with ID " + attendeeId + " does not exist");
+        }
+
         ApiResponse<Attendee> response = ApiResponse.<Attendee>builder()
                 .message("Delete Attendee with ID: " + attendeeId + " successfully")
                 .payload(attendee)

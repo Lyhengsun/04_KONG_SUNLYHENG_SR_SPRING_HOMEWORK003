@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.event_management_app.exception.NotFoundException;
 import com.example.event_management_app.model.dto.request.VenueRequest;
 import com.example.event_management_app.model.dto.response.ApiResponse;
 import com.example.event_management_app.model.dto.response.PagedResponse;
@@ -44,6 +45,11 @@ public class VenueController {
     @GetMapping("/{venue-id}")
     public ResponseEntity<ApiResponse<Venue>> getVenueById(@PathVariable("venue-id") Long venueId) {
         Venue venue = venueService.getVenueById(venueId);
+
+        if (venue == null) {
+            throw new NotFoundException("Venue with ID " + venueId + " does not exist");
+        }
+
         ApiResponse<Venue> response = ApiResponse.<Venue>builder()
                 .message("Get venue with ID: " + venueId + " successfully")
                 .payload(venue)
@@ -69,6 +75,11 @@ public class VenueController {
     public ResponseEntity<ApiResponse<Venue>> updateVenueById(@PathVariable("venue-id") Long venueId,
             @RequestBody VenueRequest request) {
         Venue venue = venueService.updateVenueById(venueId, request);
+
+        if (venue == null) {
+            throw new NotFoundException("Venue with ID " + venueId + " does not exist");
+        }
+
         ApiResponse<Venue> response = ApiResponse.<Venue>builder()
                 .message("Update venue with ID: " + venueId + " successfully")
                 .payload(venue)
@@ -81,6 +92,11 @@ public class VenueController {
     @DeleteMapping("/{venue-id}")
     public ResponseEntity<ApiResponse<Venue>> deleteVenueById(@PathVariable("venue-id") Long venueId) {
         Venue venue = venueService.deleteVenueById(venueId);
+
+        if (venue == null) {
+            throw new NotFoundException("Venue with ID " + venueId + " does not exist");
+        }
+
         ApiResponse<Venue> response = ApiResponse.<Venue>builder()
                 .message("Delete venue with ID: " + venueId + " successfully")
                 .payload(venue)

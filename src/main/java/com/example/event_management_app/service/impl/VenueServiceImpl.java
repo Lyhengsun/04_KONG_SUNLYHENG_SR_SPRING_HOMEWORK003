@@ -43,7 +43,7 @@ public class VenueServiceImpl implements VenueService {
     @Override
     public Venue updateVenueById(Long venueId, VenueRequest request) {
         Venue venue = venueRepository.updateVenueById(venueId, request);
-        return venueRepository.getVenueById(venue.getVenueId());
+        return venue;
     }
 
     @Override

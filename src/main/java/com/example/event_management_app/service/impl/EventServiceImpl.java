@@ -51,6 +51,11 @@ public class EventServiceImpl implements EventService {
     @Override
     public Event updateEventById(Long eventId, EventRequest request) {
         Event event = eventRepository.updateEventById(eventId, request);
+
+        if (event == null) {
+            return null;
+        }
+
         if (!request.getAttendeeIds().isEmpty()) {
             eventAttendeeRepository.deleteEventAttendeeByEventId(eventId);
             for (Long attendeeId : request.getAttendeeIds()) {
@@ -63,6 +68,11 @@ public class EventServiceImpl implements EventService {
     @Override
     public Event deleteEventById(Long eventId) {
         Event event = eventRepository.getEventById(eventId);
+
+        if (event == null) {
+            return null;
+        }
+
         eventRepository.deleteEventById(eventId);
         return event;
     }
