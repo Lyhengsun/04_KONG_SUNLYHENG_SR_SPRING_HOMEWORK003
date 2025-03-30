@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.event_management_app.exception.NotFoundException;
 import com.example.event_management_app.model.dto.request.EventRequest;
 import com.example.event_management_app.model.dto.response.ApiResponse;
 import com.example.event_management_app.model.dto.response.PagedResponse;
@@ -50,10 +49,6 @@ public class EventController {
             @PathVariable("event-id") @Min(message = "Event ID needed to be bigger than 0", value = 1) @Valid Long eventId) {
         Event event = eventService.getEventById(eventId);
 
-        if (event == null) {
-            throw new NotFoundException("Event with ID " + eventId + " does not exist");
-        }
-
         ApiResponse<Event> response = ApiResponse.<Event>builder()
                 .message("Get Event with ID: " + eventId + " Successfully")
                 .payload(event)
@@ -81,10 +76,6 @@ public class EventController {
             @RequestBody @Valid EventRequest request) {
         Event event = eventService.updateEventById(eventId, request);
 
-        if (event == null) {
-            throw new NotFoundException("Event with ID " + eventId + " does not exist");
-        }
-
         ApiResponse<Event> response = ApiResponse.<Event>builder()
                 .message("Update event with ID: " + eventId + " successfully")
                 .payload(event)
@@ -98,10 +89,6 @@ public class EventController {
     public ResponseEntity<ApiResponse<Event>> deleteEventById(
             @PathVariable("event-id") @Min(message = "Event ID needed to be bigger than 0", value = 1) @Valid Long eventId) {
         Event event = eventService.deleteEventById(eventId);
-
-        if (event == null) {
-            throw new NotFoundException("Event with ID " + eventId + " does not exist");
-        }
 
         ApiResponse<Event> response = ApiResponse.<Event>builder()
                 .message("Delete event with ID: " + eventId + " successfully")

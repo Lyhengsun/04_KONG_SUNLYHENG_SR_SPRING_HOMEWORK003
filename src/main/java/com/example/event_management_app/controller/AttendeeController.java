@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.event_management_app.exception.NotFoundException;
 import com.example.event_management_app.model.dto.request.AttendeeRequest;
 import com.example.event_management_app.model.dto.response.ApiResponse;
 import com.example.event_management_app.model.dto.response.PagedResponse;
@@ -50,10 +49,6 @@ public class AttendeeController {
             @Valid @Min(message = "Attendee ID number needed to be bigger than 0", value = 1) @PathVariable("attendee-id") Long attendeeId) {
         Attendee attendee = attendeeService.getAttendeeById(attendeeId);
 
-        if (attendee == null) {
-            throw new NotFoundException("Attendee with ID " + attendeeId + " does not exist");
-        }
-
         ApiResponse<Attendee> response = ApiResponse.<Attendee>builder()
                 .message("Get attendee with ID: " + attendeeId + " successfully")
                 .payload(attendee)
@@ -81,10 +76,6 @@ public class AttendeeController {
             @Valid @RequestBody AttendeeRequest request) {
         Attendee attendee = attendeeService.updateAttendeeById(attendeeId, request);
 
-        if (attendee == null) {
-            throw new NotFoundException("Attendee with ID " + attendeeId + " does not exist");
-        }
-
         ApiResponse<Attendee> response = ApiResponse.<Attendee>builder()
                 .message("Update Attendee with ID: " + attendeeId + " successfully")
                 .payload(attendee)
@@ -98,10 +89,6 @@ public class AttendeeController {
     public ResponseEntity<ApiResponse<Attendee>> deleteAttendeeById(
             @Valid @Min(message = "Attendee ID number needed to be bigger than 0", value = 1) @PathVariable("attendee-id") Long attendeeId) {
         Attendee attendee = attendeeService.deleteAttendeeById(attendeeId);
-
-        if (attendee == null) {
-            throw new NotFoundException("Attendee with ID " + attendeeId + " does not exist");
-        }
 
         ApiResponse<Attendee> response = ApiResponse.<Attendee>builder()
                 .message("Delete Attendee with ID: " + attendeeId + " successfully")

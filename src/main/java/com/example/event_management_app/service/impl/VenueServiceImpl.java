@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.example.event_management_app.exception.NotFoundException;
 import com.example.event_management_app.model.dto.request.VenueRequest;
 import com.example.event_management_app.model.dto.response.PagedResponse;
 import com.example.event_management_app.model.dto.response.PaginationInfo;
@@ -31,6 +32,11 @@ public class VenueServiceImpl implements VenueService {
     @Override
     public Venue getVenueById(Long venueId) {
         Venue venue = venueRepository.getVenueById(venueId);
+
+        if (venue == null) {
+            throw new NotFoundException("Venue with ID " + venueId + " does not exist");
+        }
+
         return venue;
     }
 
@@ -43,12 +49,22 @@ public class VenueServiceImpl implements VenueService {
     @Override
     public Venue updateVenueById(Long venueId, VenueRequest request) {
         Venue venue = venueRepository.updateVenueById(venueId, request);
+
+        if (venue == null) {
+            throw new NotFoundException("Venue with ID " + venueId + " does not exist");
+        }
+
         return venue;
     }
 
     @Override
     public Venue deleteVenueById(Long venueId) {
         Venue venue = venueRepository.deleteVenueById(venueId);
+
+        if (venue == null) {
+            throw new NotFoundException("Venue with ID " + venueId + " does not exist");
+        }
+
         return venue;
     }
 

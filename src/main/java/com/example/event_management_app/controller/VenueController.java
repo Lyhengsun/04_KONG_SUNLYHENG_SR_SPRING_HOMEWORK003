@@ -50,10 +50,6 @@ public class VenueController {
             @PathVariable("venue-id") @Min(value = 1, message = "Venue ID needed to be bigger than 0") @Valid Long venueId) {
         Venue venue = venueService.getVenueById(venueId);
 
-        if (venue == null) {
-            throw new NotFoundException("Venue with ID " + venueId + " does not exist");
-        }
-
         ApiResponse<Venue> response = ApiResponse.<Venue>builder()
                 .message("Get venue with ID: " + venueId + " successfully")
                 .payload(venue)
@@ -81,10 +77,6 @@ public class VenueController {
             @Valid @RequestBody VenueRequest request) {
         Venue venue = venueService.updateVenueById(venueId, request);
 
-        if (venue == null) {
-            throw new NotFoundException("Venue with ID " + venueId + " does not exist");
-        }
-
         ApiResponse<Venue> response = ApiResponse.<Venue>builder()
                 .message("Update venue with ID: " + venueId + " successfully")
                 .payload(venue)
@@ -98,10 +90,6 @@ public class VenueController {
     public ResponseEntity<ApiResponse<Venue>> deleteVenueById(
             @PathVariable("venue-id") @Min(value = 1, message = "Venue ID needed to be bigger than 0") @Valid Long venueId) {
         Venue venue = venueService.deleteVenueById(venueId);
-
-        if (venue == null) {
-            throw new NotFoundException("Venue with ID " + venueId + " does not exist");
-        }
 
         ApiResponse<Venue> response = ApiResponse.<Venue>builder()
                 .message("Delete venue with ID: " + venueId + " successfully")

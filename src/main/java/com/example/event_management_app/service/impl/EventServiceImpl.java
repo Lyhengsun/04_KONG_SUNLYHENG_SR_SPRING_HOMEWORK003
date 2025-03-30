@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.example.event_management_app.exception.NotFoundException;
 import com.example.event_management_app.model.dto.request.EventRequest;
 import com.example.event_management_app.model.dto.response.PagedResponse;
 import com.example.event_management_app.model.dto.response.PaginationInfo;
@@ -34,6 +35,11 @@ public class EventServiceImpl implements EventService {
     @Override
     public Event getEventById(Long eventId) {
         Event event = eventRepository.getEventById(eventId);
+
+        if (event == null) {
+            throw new NotFoundException("Event with ID " + eventId + " does not exist");
+        }
+
         return event;
     }
 
@@ -53,7 +59,7 @@ public class EventServiceImpl implements EventService {
         Event event = eventRepository.updateEventById(eventId, request);
 
         if (event == null) {
-            return null;
+            throw new NotFoundException("Event with ID " + eventId + " does not exist");
         }
 
         if (!request.getAttendeeIds().isEmpty()) {
@@ -70,7 +76,7 @@ public class EventServiceImpl implements EventService {
         Event event = eventRepository.getEventById(eventId);
 
         if (event == null) {
-            return null;
+            throw new NotFoundException("Event with ID " + eventId + " does not exist");
         }
 
         eventRepository.deleteEventById(eventId);

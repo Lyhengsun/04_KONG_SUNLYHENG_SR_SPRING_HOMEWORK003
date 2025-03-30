@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.example.event_management_app.exception.NotFoundException;
 import com.example.event_management_app.model.dto.request.AttendeeRequest;
 import com.example.event_management_app.model.dto.response.PagedResponse;
 import com.example.event_management_app.model.dto.response.PaginationInfo;
@@ -32,6 +33,11 @@ public class AttendeeServiceImpl implements AttendeeService {
     @Override
     public Attendee getAttendeeById(Long attendeeId) {
         Attendee attendee = attendeeRepository.getAttendeeById(attendeeId);
+
+        if (attendee == null) {
+            throw new NotFoundException("Attendee with ID " + attendeeId + " does not exist");
+        }
+
         return attendee;
     }
 
@@ -44,12 +50,22 @@ public class AttendeeServiceImpl implements AttendeeService {
     @Override
     public Attendee updateAttendeeById(Long attendeeId, AttendeeRequest request) {
         Attendee attendee = attendeeRepository.updateAttendeeById(attendeeId, request);
+
+        if (attendee == null) {
+            throw new NotFoundException("Attendee with ID " + attendeeId + " does not exist");
+        }
+
         return attendee;
     }
 
     @Override
     public Attendee deleteAttendeeById(Long attendeeId) {
         Attendee attendee = attendeeRepository.deleteAttendeeById(attendeeId);
+
+        if (attendee == null) {
+            throw new NotFoundException("Attendee with ID " + attendeeId + " does not exist");
+        }
+
         return attendee;
     }
 }
