@@ -21,6 +21,8 @@ import com.example.event_management_app.model.dto.response.PagedResponse;
 import com.example.event_management_app.model.entity.Event;
 import com.example.event_management_app.service.EventService;
 
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -30,8 +32,9 @@ public class EventController {
     final private EventService eventService;
 
     @GetMapping
-    public ResponseEntity<ApiResponse<PagedResponse<Event>>> getAllEvents(@RequestParam(defaultValue = "1") Long page,
-            @RequestParam(defaultValue = "5") Long size) {
+    public ResponseEntity<ApiResponse<PagedResponse<Event>>> getAllEvents(
+            @RequestParam(defaultValue = "1") @Min(message = "page number needed to be bigger than 0", value = 1) @Valid Long page,
+            @RequestParam(defaultValue = "5") @Min(message = "page size needed to be bigger than 0", value = 1) @Valid Long size) {
         PagedResponse<Event> pagedResponse = eventService.getAllEvents(page, size);
         ApiResponse<PagedResponse<Event>> response = ApiResponse.<PagedResponse<Event>>builder()
                 .message("Get all Events Successfully")
@@ -43,7 +46,8 @@ public class EventController {
     }
 
     @GetMapping("/{event-id}")
-    public ResponseEntity<ApiResponse<Event>> getEventById(@PathVariable("event-id") Long eventId) {
+    public ResponseEntity<ApiResponse<Event>> getEventById(
+            @PathVariable("event-id") @Min(message = "Event ID needed to be bigger than 0", value = 1) @Valid Long eventId) {
         Event event = eventService.getEventById(eventId);
 
         if (event == null) {
@@ -60,7 +64,7 @@ public class EventController {
     }
 
     @PostMapping
-    public ResponseEntity<ApiResponse<Event>> saveEvent(@RequestBody EventRequest request) {
+    public ResponseEntity<ApiResponse<Event>> saveEvent(@RequestBody @Valid EventRequest request) {
         Event event = eventService.saveEvent(request);
         ApiResponse<Event> response = ApiResponse.<Event>builder()
                 .message("Save new event Successfully")
@@ -72,8 +76,9 @@ public class EventController {
     }
 
     @PutMapping("/{event-id}")
-    public ResponseEntity<ApiResponse<Event>> updateEventById(@PathVariable("event-id") Long eventId,
-            @RequestBody EventRequest request) {
+    public ResponseEntity<ApiResponse<Event>> updateEventById(
+            @PathVariable("event-id") @Min(message = "Event ID needed to be bigger than 0", value = 1) @Valid Long eventId,
+            @RequestBody @Valid EventRequest request) {
         Event event = eventService.updateEventById(eventId, request);
 
         if (event == null) {
@@ -90,7 +95,8 @@ public class EventController {
     }
 
     @DeleteMapping("/{event-id}")
-    public ResponseEntity<ApiResponse<Event>> deleteEventById(@PathVariable("event-id") Long eventId) {
+    public ResponseEntity<ApiResponse<Event>> deleteEventById(
+            @PathVariable("event-id") @Min(message = "Event ID needed to be bigger than 0", value = 1) @Valid Long eventId) {
         Event event = eventService.deleteEventById(eventId);
 
         if (event == null) {

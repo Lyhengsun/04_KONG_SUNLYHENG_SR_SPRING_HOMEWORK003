@@ -21,6 +21,8 @@ import com.example.event_management_app.model.dto.response.PagedResponse;
 import com.example.event_management_app.model.entity.Venue;
 import com.example.event_management_app.service.VenueService;
 
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -30,8 +32,9 @@ public class VenueController {
     final private VenueService venueService;
 
     @GetMapping
-    public ResponseEntity<ApiResponse<PagedResponse<Venue>>> getAllVenues(@RequestParam(defaultValue = "1") Long page,
-            @RequestParam(defaultValue = "5") Long size) {
+    public ResponseEntity<ApiResponse<PagedResponse<Venue>>> getAllVenues(
+            @RequestParam(defaultValue = "1") @Min(value = 1, message = "page number needed to be bigger than 0") Long page,
+            @RequestParam(defaultValue = "5") @Min(value = 1, message = "page size needed to be bigger than 0") @Valid Long size) {
         PagedResponse<Venue> pagedResponse = venueService.getAllVenues(page, size);
         ApiResponse<PagedResponse<Venue>> response = ApiResponse.<PagedResponse<Venue>>builder()
                 .message("Get all venues succesfully")
@@ -43,7 +46,8 @@ public class VenueController {
     }
 
     @GetMapping("/{venue-id}")
-    public ResponseEntity<ApiResponse<Venue>> getVenueById(@PathVariable("venue-id") Long venueId) {
+    public ResponseEntity<ApiResponse<Venue>> getVenueById(
+            @PathVariable("venue-id") @Min(value = 1, message = "Venue ID needed to be bigger than 0") @Valid Long venueId) {
         Venue venue = venueService.getVenueById(venueId);
 
         if (venue == null) {
@@ -60,7 +64,7 @@ public class VenueController {
     }
 
     @PostMapping
-    public ResponseEntity<ApiResponse<Venue>> saveVenue(@RequestBody VenueRequest request) {
+    public ResponseEntity<ApiResponse<Venue>> saveVenue(@RequestBody @Valid VenueRequest request) {
         Venue venue = venueService.saveVenue(request);
         ApiResponse<Venue> response = ApiResponse.<Venue>builder()
                 .message("Save new venue successfully")
@@ -72,8 +76,9 @@ public class VenueController {
     }
 
     @PutMapping("/{venue-id}")
-    public ResponseEntity<ApiResponse<Venue>> updateVenueById(@PathVariable("venue-id") Long venueId,
-            @RequestBody VenueRequest request) {
+    public ResponseEntity<ApiResponse<Venue>> updateVenueById(
+            @Valid @Min(value = 1, message = "Venue ID needed to be bigger than 0") @PathVariable("venue-id") Long venueId,
+            @Valid @RequestBody VenueRequest request) {
         Venue venue = venueService.updateVenueById(venueId, request);
 
         if (venue == null) {
@@ -90,7 +95,8 @@ public class VenueController {
     }
 
     @DeleteMapping("/{venue-id}")
-    public ResponseEntity<ApiResponse<Venue>> deleteVenueById(@PathVariable("venue-id") Long venueId) {
+    public ResponseEntity<ApiResponse<Venue>> deleteVenueById(
+            @PathVariable("venue-id") @Min(value = 1, message = "Venue ID needed to be bigger than 0") @Valid Long venueId) {
         Venue venue = venueService.deleteVenueById(venueId);
 
         if (venue == null) {
