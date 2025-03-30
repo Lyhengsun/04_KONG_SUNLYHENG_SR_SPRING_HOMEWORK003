@@ -77,7 +77,7 @@ public class EventController {
 
     @PutMapping("/{event-id}")
     public ResponseEntity<ApiResponse<Event>> updateEventById(
-            @PathVariable("event-id") @Min(message = "Event ID needed to be bigger than 0", value = 1) @Valid Long eventId,
+            @PathVariable("event-id") Long eventId,
             @RequestBody @Valid EventRequest request) {
         Event event = eventService.updateEventById(eventId, request);
 

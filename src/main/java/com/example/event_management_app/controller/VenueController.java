@@ -33,7 +33,7 @@ public class VenueController {
 
     @GetMapping
     public ResponseEntity<ApiResponse<PagedResponse<Venue>>> getAllVenues(
-            @RequestParam(defaultValue = "1") @Min(value = 1, message = "page number needed to be bigger than 0") Long page,
+            @RequestParam(defaultValue = "1") @Min(value = 1, message = "page number needed to be bigger than 0") @Valid Long page,
             @RequestParam(defaultValue = "5") @Min(value = 1, message = "page size needed to be bigger than 0") @Valid Long size) {
         PagedResponse<Venue> pagedResponse = venueService.getAllVenues(page, size);
         ApiResponse<PagedResponse<Venue>> response = ApiResponse.<PagedResponse<Venue>>builder()
@@ -77,7 +77,7 @@ public class VenueController {
 
     @PutMapping("/{venue-id}")
     public ResponseEntity<ApiResponse<Venue>> updateVenueById(
-            @Valid @Min(value = 1, message = "Venue ID needed to be bigger than 0") @PathVariable("venue-id") Long venueId,
+            @PathVariable("venue-id") Long venueId,
             @Valid @RequestBody VenueRequest request) {
         Venue venue = venueService.updateVenueById(venueId, request);
 

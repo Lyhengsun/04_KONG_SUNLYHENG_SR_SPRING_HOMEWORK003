@@ -77,7 +77,7 @@ public class AttendeeController {
 
     @PutMapping("/{attendee-id}")
     public ResponseEntity<ApiResponse<Attendee>> updateAttendeeById(
-            @Valid @Min(message = "Attendee ID number needed to be bigger than 0", value = 1) @PathVariable("attendee-id") Long attendeeId,
+            @PathVariable("attendee-id") Long attendeeId,
             @Valid @RequestBody AttendeeRequest request) {
         Attendee attendee = attendeeService.updateAttendeeById(attendeeId, request);
 
