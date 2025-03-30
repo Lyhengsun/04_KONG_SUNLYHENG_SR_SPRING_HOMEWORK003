@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.event_management_app.exception.NotFoundException;
 import com.example.event_management_app.model.dto.request.VenueRequest;
 import com.example.event_management_app.model.dto.response.ApiResponse;
 import com.example.event_management_app.model.dto.response.PagedResponse;
